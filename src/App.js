@@ -1,7 +1,7 @@
 import React from 'react'
 // import * as BooksAPI from './BooksAPI'
 import './App.css'
-import BookShelf from './BookShelf'
+import BookShelves from './BookShelves'
 
 class BooksApp extends React.Component {
   state = {
@@ -72,7 +72,7 @@ class BooksApp extends React.Component {
     ]
   }
 
-    /**
+  /**
    * @description Moves one book to a bookshelf
    * @param {object} book
    * @param {string} bookShelf
@@ -80,11 +80,17 @@ class BooksApp extends React.Component {
   moveBook = (book) => {
     this.setState((state) => ({
       books: this.state.books.map((b) => {
-        console.log("The value in the target is " + event.target.value);
         b.status = (b.title === book.title) ? (event.target.value) : ( b.status );
         return b;
       })
     }))
+  }
+
+  /**
+   * @description Open the search page
+   */
+  openSearch = () => {
+    this.setState({ showSearchPage: true })
   }
 
   render() {
@@ -112,21 +118,7 @@ class BooksApp extends React.Component {
             </div>
           </div>
         ) : (
-          <div className="list-books">
-            <div className="list-books-title">
-              <h1>MyReads</h1>
-            </div>
-            <div className="list-books-content">
-              <div>
-          		<BookShelf onMoveBook={this.moveBook} books={this.state.books.filter((b) => b.status === "currentlyReading")} title="Currently Reading"/>
-                <BookShelf onMoveBook={this.moveBook} books={this.state.books.filter((b) => b.status === "wantToRead")} title="Want to Read"/>
-				<BookShelf onMoveBook={this.moveBook} books={this.state.books.filter((b) => b.status === "read")} title="Read"/>
-              </div>
-            </div>
-            <div className="open-search">
-              <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a>
-            </div>
-          </div>
+          <BookShelves onMoveBook={this.moveBook} onSearch={this.openSearch} books={this.state.books}/>
         )}
       </div>
     )

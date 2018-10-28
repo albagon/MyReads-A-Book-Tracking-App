@@ -1,10 +1,6 @@
 import React, { Component } from 'react'
 
-class Book extends Component {
-  changeStatus(e){
-    console.log("There was a change of status, change the state of the book")
-  }
-  
+class Book extends Component {  
   render() {
     return (
       <div className="book">
