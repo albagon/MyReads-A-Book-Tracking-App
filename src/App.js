@@ -3,25 +3,6 @@ import React from 'react'
 import './App.css'
 import BookShelf from './BookShelf'
 
-const books = [
-  {
-    "width": 128,
-    "height": 193,
-    "url": "http://books.google.com/books/content?id=PGR2AwAAQBAJ&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE73-GnPVEyb7MOCxDzOYF1PTQRuf6nCss9LMNOSWBpxBrz8Pm2_mFtWMMg_Y1dx92HT7cUoQBeSWjs3oEztBVhUeDFQX6-tWlWz1-feexS0mlJPjotcwFqAg6hBYDXuK_bkyHD-y&source=gbs_api",
-    "status": "currentlyReading",
-    "title": "To Kill a Mockingbird",
-    "author": "Harper Lee"
-  },
-  {
-    "width": 128,
-    "height": 188,
-    "url": "http://books.google.com/books/content?id=yDtCuFHXbAYC&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE72RRiTR6U5OUg3IY_LpHTL2NztVWAuZYNFE8dUuC0VlYabeyegLzpAnDPeWxE6RHi0C2ehrR9Gv20LH2dtjpbcUcs8YnH5VCCAH0Y2ICaKOTvrZTCObQbsfp4UbDqQyGISCZfGN&source=gbs_api",
-    "status": "currentlyReading",
-    "title": "Ender's Game",
-    "author": "Orson Scott Card"
-  }
-]
-
 class BooksApp extends React.Component {
   state = {
     /**
@@ -30,7 +11,40 @@ class BooksApp extends React.Component {
      * users can use the browser's back and forward buttons to navigate between
      * pages, as well as provide a good URL they can bookmark and share.
      */
-    showSearchPage: false
+    showSearchPage: false,
+    books : [
+      {
+        "width": 128,
+        "height": 193,
+        "url": "http://books.google.com/books/content?id=PGR2AwAAQBAJ&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE73-GnPVEyb7MOCxDzOYF1PTQRuf6nCss9LMNOSWBpxBrz8Pm2_mFtWMMg_Y1dx92HT7cUoQBeSWjs3oEztBVhUeDFQX6-tWlWz1-feexS0mlJPjotcwFqAg6hBYDXuK_bkyHD-y&source=gbs_api",
+        "status": "currentlyReading",
+        "title": "To Kill a Mockingbird",
+        "author": "Harper Lee"
+      },
+      {
+        "width": 128,
+        "height": 188,
+        "url": "http://books.google.com/books/content?id=yDtCuFHXbAYC&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE72RRiTR6U5OUg3IY_LpHTL2NztVWAuZYNFE8dUuC0VlYabeyegLzpAnDPeWxE6RHi0C2ehrR9Gv20LH2dtjpbcUcs8YnH5VCCAH0Y2ICaKOTvrZTCObQbsfp4UbDqQyGISCZfGN&source=gbs_api",
+        "status": "currentlyReading",
+        "title": "Ender's Game",
+        "author": "Orson Scott Card"
+      }
+    ]
+  }
+
+    /**
+   * @description Moves one book to a bookshelf
+   * @param {object} book
+   * @param {string} bookShelf
+   */
+  moveBook = (book) => {
+    this.setState((state) => ({
+      books: this.state.books.map((b) => {
+        console.log("The value in the target is " + event.target.value);
+        b.status = (b.title === book.title) ? (event.target.value) : ( b.status );
+        return b;
+      })
+    }))
   }
 
   render() {
@@ -64,7 +78,7 @@ class BooksApp extends React.Component {
             </div>
             <div className="list-books-content">
               <div>
-          		<BookShelf books={books} title="Currently Reading"/>
+          		<BookShelf onMoveBook={this.moveBook} books={this.state.books.filter((b) => b.status === "currentlyReading")} title="Currently Reading"/>
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">Currently Reading</h2>
                   <div className="bookshelf-books">
@@ -76,7 +90,7 @@ class BooksApp extends React.Component {
                             <div className="book-shelf-changer">
                               <select>
                                 <option value="move" disabled>Move to...</option>
-                                <option value="currentlyReading" selected>Currently Reading</option>
+                                <option value="currentlyReading">Currently Reading</option>
                                 <option value="wantToRead">Want to Read</option>
                                 <option value="read">Read</option>
                                 <option value="none">None</option>
@@ -94,7 +108,7 @@ class BooksApp extends React.Component {
                             <div className="book-shelf-changer">
                               <select>
                                 <option value="move" disabled>Move to...</option>
-                                <option value="currentlyReading" selected>Currently Reading</option>
+                                <option value="currentlyReading">Currently Reading</option>
                                 <option value="wantToRead">Want to Read</option>
                                 <option value="read">Read</option>
                                 <option value="none">None</option>
@@ -120,7 +134,7 @@ class BooksApp extends React.Component {
                               <select>
                                 <option value="move" disabled>Move to...</option>
                                 <option value="currentlyReading">Currently Reading</option>
-                                <option value="wantToRead" selected>Want to Read</option>
+                                <option value="wantToRead">Want to Read</option>
                                 <option value="read">Read</option>
                                 <option value="none">None</option>
                               </select>
@@ -138,7 +152,7 @@ class BooksApp extends React.Component {
                               <select>
                                 <option value="move" disabled>Move to...</option>
                                 <option value="currentlyReading">Currently Reading</option>
-                                <option value="wantToRead" selected>Want to Read</option>
+                                <option value="wantToRead">Want to Read</option>
                                 <option value="read">Read</option>
                                 <option value="none">None</option>
                               </select>
@@ -164,7 +178,7 @@ class BooksApp extends React.Component {
                                 <option value="move" disabled>Move to...</option>
                                 <option value="currentlyReading">Currently Reading</option>
                                 <option value="wantToRead">Want to Read</option>
-                                <option value="read" selected>Read</option>
+                                <option value="read">Read</option>
                                 <option value="none">None</option>
                               </select>
                             </div>
@@ -182,7 +196,7 @@ class BooksApp extends React.Component {
                                 <option value="move" disabled>Move to...</option>
                                 <option value="currentlyReading">Currently Reading</option>
                                 <option value="wantToRead">Want to Read</option>
-                                <option value="read" selected>Read</option>
+                                <option value="read">Read</option>
                                 <option value="none">None</option>
                               </select>
                             </div>
@@ -200,7 +214,7 @@ class BooksApp extends React.Component {
                                 <option value="move" disabled>Move to...</option>
                                 <option value="currentlyReading">Currently Reading</option>
                                 <option value="wantToRead">Want to Read</option>
-                                <option value="read" selected>Read</option>
+                                <option value="read">Read</option>
                                 <option value="none">None</option>
                               </select>
                             </div>
