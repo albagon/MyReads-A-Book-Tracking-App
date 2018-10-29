@@ -51,7 +51,7 @@ class BookShelves extends Component {
             <div className="open-search">
               <a onClick={() => this.props.onSearch()}>Add a book</a>
             </div>
-          </div>
+    	</div>
     )
   }
 }
