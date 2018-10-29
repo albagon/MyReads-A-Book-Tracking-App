@@ -14,11 +14,11 @@ class BookShelves extends Component {
     				<h2 className="bookshelf-title">Currently Reading</h2>
       				<div className="bookshelf-books">
        					<ol className="books-grid">
-         					{this.props.books.filter((b) => b.status === "currentlyReading").map((book) => (
-              					<li key={book.title}>
-                					<Book onMoveBook={this.props.onMoveBook} book={book}/>
+         					{this.props.books.filter((b) => b.shelf === "currentlyReading").map((bk) => (
+              					<li key={bk.id}>
+                					<Book onMoveBook={this.props.onMoveBook} book={bk}/>
               					</li>
-            				))}
+    						))}
           				</ol>
       				</div>
      			</div>
@@ -26,9 +26,9 @@ class BookShelves extends Component {
     				<h2 className="bookshelf-title">Want to Read</h2>
       				<div className="bookshelf-books">
        					<ol className="books-grid">
-         					{this.props.books.filter((b) => b.status === "wantToRead").map((book) => (
-              					<li key={book.title}>
-                					<Book onMoveBook={this.props.onMoveBook} book={book}/>
+         					{this.props.books.filter((b) => b.shelf === "wantToRead").map((bk) => (
+              					<li key={bk.id}>
+                					<Book onMoveBook={this.props.onMoveBook} book={bk}/>
               					</li>
             				))}
           				</ol>
@@ -38,9 +38,9 @@ class BookShelves extends Component {
     				<h2 className="bookshelf-title">Read</h2>
       				<div className="bookshelf-books">
        					<ol className="books-grid">
-         					{this.props.books.filter((b) => b.status === "read").map((book) => (
-              					<li key={book.title}>
-                					<Book onMoveBook={this.props.onMoveBook} book={book}/>
+         					{this.props.books.filter((b) => b.shelf === "read").map((bk) => (
+              					<li key={bk.id}>
+                					<Book onMoveBook={this.props.onMoveBook} book={bk}/>
               					</li>
             				))}
           				</ol>
