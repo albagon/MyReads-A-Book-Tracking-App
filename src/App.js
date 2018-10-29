@@ -23,12 +23,13 @@ class BooksApp extends React.Component {
   /**
    * @description Moves one book to a bookshelf
    * @param {object} book
-   * @param {string} bookShelf
    */
   moveBook = (book) => {
     this.setState((state) => ({
       books: this.state.books.map((b) => {
-        b.shelf = (b.title === book.title) ? (event.target.value) : ( b.shelf );
+        if(b.title === book.title){
+          b.shelf = event.target.value
+          BooksAPI.update(b, b.shelf)}
         return b;
       })
     }))
