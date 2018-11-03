@@ -1,26 +1,34 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import escapeRegExp from 'escape-string-regexp'
+import * as BooksAPI from './BooksAPI'
+/*import escapeRegExp from 'escape-string-regexp'*/
 import Book from './Book'
 
 class SearchBooks extends Component {
   state = {
-    query: ''
+    query: '',
+    showingBooks : []
   }
-    
   updateQuery = (query) => {
     this.setState({ query: query})
   }
 
-  render() {
-    let showingBooks
+  /*async fetchSearch(query){
+    let showingBooks = []
+    showingBooks = await BooksAPI.search(query, 20).then(books => console.log(books)).catch(error => {console.log(error)})
+    return showingBooks
+  }*/
+ componentDidMount(){
     if (this.state.query) {
-      const match = new RegExp(escapeRegExp(this.state.query), 'i')
-      showingBooks = this.props.books.filter((book) => match.test(book.title))
-    } else {
-      showingBooks = []
+      console.log(this.state.query)
+      
+      /*const match = new RegExp(escapeRegExp(this.state.query), 'i')
+      showingBooks = this.props.books.filter((book) => match.test(book.title))*/
+      this.setState({showingBooks : BooksAPI.search(this.state.query, 20).then(books => console.log(books)).catch(error => {console.log(error)})})
+      /*TODO: Add idle time here because the promise is not resolved on time*/
     }
-
+  }
+  render() {   
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -40,8 +48,9 @@ class SearchBooks extends Component {
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-            {showingBooks.map((book) => (
-              <li key={book.title}>
+            {console.log(this.state.showingBooks)}
+            {this.state.showingBooks.map((book) => (
+              <li key={book.id}>
                 <Book onMoveBook={this.props.onMoveBook} book={book}/>
               </li>
             ))}
