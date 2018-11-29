@@ -9,25 +9,21 @@ class SearchBooks extends Component {
     query: '',
     showingBooks : []
   }
+
   updateQuery = (query) => {
     this.setState({ query: query})
   }
 
-  /*async fetchSearch(query){
-    let showingBooks = []
-    showingBooks = await BooksAPI.search(query, 20).then(books => console.log(books)).catch(error => {console.log(error)})
-    return showingBooks
-  }*/
- componentDidMount(){
-    if (this.state.query) {
-      console.log(this.state.query)
-      
-      /*const match = new RegExp(escapeRegExp(this.state.query), 'i')
-      showingBooks = this.props.books.filter((book) => match.test(book.title))*/
-      this.setState({showingBooks : BooksAPI.search(this.state.query, 20).then(books => console.log(books)).catch(error => {console.log(error)})})
-      /*TODO: Add idle time here because the promise is not resolved on time*/
+  componentDidUpdate(prevProps, prevState) {
+    if(prevState.query !== this.state.query) {
+      BooksAPI.search(this.state.query, 20)
+      .then(books => {
+        this.setState({ showingBooks: books })
+      })
+      .catch(error => {console.log(error);})
     }
   }
+
   render() {   
     return (
       <div className="search-books">
@@ -43,16 +39,15 @@ class SearchBooks extends Component {
               you don't find a specific author or title. Every search is limited by search terms.
             */}
             <input type="text" placeholder="Search by title or author" value={this.state.query} onChange={(event) => this.updateQuery(event.target.value)}/>
-
           </div>
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-            {console.log(this.state.showingBooks)}
-            {this.state.showingBooks.map((book) => (
-              <li key={book.id}>
-                <Book onMoveBook={this.props.onMoveBook} book={book}/>
-              </li>
+            {this.state.showingBooks instanceof Array &&
+              this.state.showingBooks.map((bk) => (
+              	<li key={bk.id}>
+                	<Book onMoveBook={this.props.onMoveBook} book={bk}/>
+              	</li>
             ))}
           </ol>
         </div>
