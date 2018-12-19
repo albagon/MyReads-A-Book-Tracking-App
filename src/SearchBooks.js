@@ -44,27 +44,26 @@ class SearchBooks extends Component {
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-            {// If the API returned an array, then check if the books are in a shelf
-             this.state.showingBooks instanceof Array &&
-               this.state.showingBooks.map((bk) => {
-                 let inShelfBook;
-                 this.props.books.forEach((boo, index) => {
-                   //console.log('id of shelf='+boo.id+' id of search='+bk.id);
-                   console.log('hello');
-                   inShelfBook = boo.id === bk.id ? 
-                     <li key={boo.id}>IN THE SHELF
-                       <Book onMoveBook={this.props.onMoveBook} book={this.props.books[index]}/>
-                     </li> : 
-                     <li key={bk.id}>
+          {// If the API returned an array, then check if the books are in a shelf
+           this.state.showingBooks instanceof Array ? 
+            // if the books found are in the shelves then display those books
+            (this.state.showingBooks.map((bk) => {
+              let foundBook = this.props.books.find((b) => {
+                return b.id === bk.id;
+              }); // end of let
+              return foundBook !== undefined ? 
+                (<li key={foundBook.id}>
+                   <Book onMoveBook={this.props.onMoveBook} book={foundBook}/>
+                 </li>
+                ) : (<li key={bk.id}>
                        <Book onMoveBook={this.props.onMoveBook} book={bk}/>
                      </li>
-                 });
-                 //console.log(inShelfBook);
-                 return (
-                   inShelfBook 
-                 );
-               })
-            }
+                )
+             })) // end of map
+            : (<li key={'777'}>
+                No books to display
+              </li>)
+          }
           </ol>
         </div>
       </div>
