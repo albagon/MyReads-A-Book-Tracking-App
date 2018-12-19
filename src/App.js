@@ -25,7 +25,6 @@ class BooksApp extends React.Component {
    * @param {object} book
    */
   moveBook = (book) => {
-    let newBooks = this.state.books;
     let indexBookFound = null;
     // Is the book in the state?
     let foundBook = this.state.books.find((b, i) => {
@@ -33,10 +32,10 @@ class BooksApp extends React.Component {
       console.log(indexBookFound);
       return b.id === book.id;
     });
-
+    let newShelf = '';
+    
     // If the book we are moving already exists in the state
     if(foundBook) {
-      let newShelf = '';
       this.setState((state) => ({
         books: this.state.books.map((b) => {
           newShelf = event.target.value;
@@ -49,10 +48,17 @@ class BooksApp extends React.Component {
         }).filter(b => b.shelf !== 'none') //end of map and filter
       })) // end of setState
     } else {
+      let newBooks = this.state.books;
       newBooks.push(book);
-      BooksAPI.update(book, event.target.value)
-      .then(response => {this.setState((state) => ({ books: newBooks}))})
-      .catch(error => {console.log(error);})
+      this.setState((state) => ({
+        books: newBooks.map((b) => {
+          if(b.id === book.id){
+            b.shelf = event.target.value;
+            BooksAPI.update(b, b.shelf).catch(error => {console.log(error);});
+          }
+          return b;
+        })
+      })) // end of setState
       
       // print list of books in shelves
       console.log(this.state.books);
