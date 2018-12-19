@@ -7,7 +7,7 @@ import Book from './Book'
 class SearchBooks extends Component {
   state = {
     query: '',
-    showingBooks : []
+    showingBooks: []
   }
 
   updateQuery = (query) => {
@@ -16,6 +16,7 @@ class SearchBooks extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if(prevState.query !== this.state.query) {
+      // If there was a change in the query then search it and update the showing books with the result
       BooksAPI.search(this.state.query, 20)
       .then(books => {
         this.setState({ showingBooks: books })
@@ -43,12 +44,27 @@ class SearchBooks extends Component {
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-            {this.state.showingBooks instanceof Array &&
-              this.state.showingBooks.map((bk) => (
-              	<li key={bk.id}>
-                	<Book onMoveBook={this.props.onMoveBook} book={bk}/>
-              	</li>
-            ))}
+            {// If the API returned an array, then check if the books are in a shelf
+             this.state.showingBooks instanceof Array &&
+               this.state.showingBooks.map((bk) => {
+                 let inShelfBook;
+                 this.props.books.forEach((boo, index) => {
+                   //console.log('id of shelf='+boo.id+' id of search='+bk.id);
+                   console.log('hello');
+                   inShelfBook = boo.id === bk.id ? 
+                     <li key={boo.id}>IN THE SHELF
+                       <Book onMoveBook={this.props.onMoveBook} book={this.props.books[index]}/>
+                     </li> : 
+                     <li key={bk.id}>
+                       <Book onMoveBook={this.props.onMoveBook} book={bk}/>
+                     </li>
+                 });
+                 //console.log(inShelfBook);
+                 return (
+                   inShelfBook 
+                 );
+               })
+            }
           </ol>
         </div>
       </div>

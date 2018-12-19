@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 
-class Book extends Component {  
+class Book extends Component {
+   
   render() {
     let authorsHolder = "";
     if(this.props.book.authors) {authorsHolder = this.props.book.authors.join(', ')};
@@ -17,7 +18,7 @@ class Book extends Component {
               <option value="currentlyReading">Currently Reading</option>
               <option value="wantToRead">Want to Read</option>
               <option value="read">Read</option>
-              <option value="none">None</option>
+              <option value="none" defaultValue>None</option>
             </select>
           </div>
         </div>
