@@ -6,7 +6,8 @@ class Book extends Component {
     let authorsHolder = "";
     if(this.props.book.authors) {authorsHolder = this.props.book.authors.join(', ')};
     let imageHolder = "";
-    if(this.props.book.imageLinks.smallThumbnail) {imageHolder = this.props.book.imageLinks.smallThumbnail};
+    let hasPropImg = this.props.book.hasOwnProperty('imageLinks');
+    if(hasPropImg) {imageHolder = this.props.book.imageLinks.smallThumbnail};
     
     return (
       <div className="book">
